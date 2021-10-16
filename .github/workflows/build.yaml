@@ -21,7 +21,7 @@ jobs:
       - name: Remove previous client application build
         uses: JesseTG/rm@v1.0.2
         with:
-          path: ./server/public
+          path: ./public
       - name: Install Dependencies for client application.
         working-directory: ./client
         run: npm install
