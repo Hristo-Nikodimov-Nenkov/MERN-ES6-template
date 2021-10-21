@@ -9,7 +9,7 @@ for (const methodName in instanceMethods) {
 }
 
 for (const methodName in staticMethods) {
-    userSchema.methods[methodName] = staticMethods[methodName];
+    userSchema.statics[methodName] = staticMethods[methodName];
 }
 
 const User = mongoose.model("User", userSchema, "users", false);
