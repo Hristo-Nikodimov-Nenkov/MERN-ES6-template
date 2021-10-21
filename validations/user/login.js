@@ -1,6 +1,6 @@
 import {isRequired, isRequiredBail} from "../common.js"
 
 export default [
-    isRequired("username"),
+    isRequired("identifier"),
     isRequiredBail("password")
 ]
