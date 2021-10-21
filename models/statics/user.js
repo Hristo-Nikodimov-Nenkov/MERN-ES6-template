@@ -36,6 +36,7 @@ export async function getByEmail(email) {
 export default {
     usernameExists,
     emailExists,
+    userExists,
     getByUsername,
     getByEmail
 }
