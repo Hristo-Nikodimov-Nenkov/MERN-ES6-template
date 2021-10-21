@@ -1,49 +1,5 @@
-import crypto from "crypto";
-import securityConfigs from "../configs/security.js";
-
-export function generateSaltSync() {
-    return crypto.randomBytes(securityConfigs.passwordSaltLength).toString(securityConfigs.encoding);
-}
-
-export function generateSalt() {
-    return new Promise(((resolve, reject) => {
-        crypto.randomBytes(securityConfigs.passwordSaltLength, (err, salt) => {
-            if (err) {
-                reject(err);
-            }
-
-            resolve(salt.toString(securityConfigs.encoding));
-        });
-    }));
-}
-
-export function generateHashSync(salt, password) {
-    return crypto.pbkdf2Sync(
-        password,
-        salt,
-        securityConfigs.iterationsCount,
-        securityConfigs.passwordHashLength,
-        securityConfigs.encoding);
-}
-
-export function generateHash(salt, password) {
-    return new Promise((resolve, reject) => {
-        crypto.pbkdf2(
-            password,
-            salt,
-            securityConfigs.iterationsCount,
-            securityConfigs.passwordHashLength,
-            securityConfigs.encoding,
-            (err, hash) => {
-                if (err) {
-                    reject(err);
-                }
-
-                resolve(hash);
-            }
-        )
-    });
-}
+import jwt from "jsonwebtoken";
+import {cookieConfigs, tokenConfigs} from "../configs/security.js";
 
 const defaultHasAllRoles = false;
 
@@ -75,10 +31,52 @@ export function isAuthenticated(roles, hasAllRoles = defaultHasAllRoles) {
     }
 }
 
+export function signTokenSync(user) {
+    return jwt.sign(user, tokenConfigs.tokenSecret, tokenConfigs.options);
+}
+
+export function signToken(user) {
+    return new Promise((resolve, reject) => {
+        jwt.sign(user, tokenConfigs.tokenSecret, tokenConfigs.options, (err, token) => {
+            if (err) {
+                reject(err);
+            }
+
+            resolve(token);
+        });
+    });
+}
+
+export function verifyTokenSync(token) {
+    return jwt.verify(token, tokenConfigs.tokenSecret, tokenConfigs.options);
+}
+
+export function verifyToken(token) {
+    return new Promise((resolve, reject) => {
+        jwt.verify(token, tokenConfigs.tokenSecret, tokenConfigs.options, (err, payload) => {
+            if (err) {
+                reject(err);
+            }
+
+            resolve(payload);
+        });
+    });
+}
+
+export function setAuthenticationCookie(res, token) {
+    res.cookie(cookieConfigs.authenticationCookieName, token, cookieConfigs.options);
+}
+
+export function deleteAuthenticationCookie(res) {
+    res.clearCookie(cookieConfigs.authenticationCookieName);
+}
+
 export default {
-    generateSaltSync,
-    generateSalt,
-    generateHashSync,
-    generateHash,
-    isAuthenticated
+    isAuthenticated,
+    signTokenSync,
+    signToken,
+    verifyTokenSync,
+    verifyToken,
+    setAuthenticationCookie,
+    deleteAuthenticationCookie
 }
