@@ -1,11 +1,10 @@
 export const username = {
-    fieldNames: "username",
+    allowedRegex: /^[a-zA-Z0-9.\-_]+$/,
     minLength: 6,
     maxLength: 30
 }
 
 export const password = {
-    fieldNames: "password",
     minLength: 8,
     maxLength: 40,
     requiresUpperCaseSymbol: true,
