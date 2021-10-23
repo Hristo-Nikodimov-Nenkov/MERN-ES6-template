@@ -1,26 +1,31 @@
-export function isRequiredMessage(fields) {
-    const fieldsIsArray = Array.isArray(fields)
-    const fieldNames = fieldsIsArray
+export function fieldsString(fields){
+    return Array.isArray(fields)
         ? fields.map(f => f.toLowerCase())
             .map(f => f[0].toUpperCase() + f.slice(1))
             .join(", ")
         : fields[0].toUpperCase() + fields.slice(1);
+}
+
+export function isRequiredMessage(fields) {
+    const fieldsIsArray = Array.isArray(fields)
+    const fieldNames = fieldsString(fields)
 
     return `${fieldNames} ${fieldsIsArray && fields.length > 1 ? "are" : "is"} required!`;
 }
 
 export function hasLengthMessage(fields, minLength, maxLength) {
-    const fieldsString = Array.isArray(fields)
-        ? fields
-            .map(f => f.toLowerCase())
-            .map(f => f[0].toUpperCase() + f.slice(1))
-            .join(", ")
-        : fields[0].toUpperCase() + fields.slice(1);
+    const fieldsStr = fieldsString(fields);
+    return `${fieldsStr} must be between ${minLength} and ${maxLength} symbols!`;
+}
 
-    return `${fieldsString} must be between ${minLength} and ${maxLength} symbols!`;
+export function containsMessage(fields, message){
+    const fieldsStr = fieldsString(fields);
+    return `${fieldsStr} must contain ${message}.`;
 }
 
 export default {
+    fieldsString,
     isRequiredMessage,
-    hasLengthMessage
+    hasLengthMessage,
+    containsMessage
 }
