@@ -88,10 +88,24 @@ export async function checkUser(model) {
     }
 }
 
-export async function updateUser(model) {
+export function generateVerificationHash(userId) {
+    return crypto
+        .createHmac(passwordConfigs.hashingAlgorithm, userId)
+        .update(userId)
+        .digest(passwordConfigs.encoding)
 }
 
-export async function deleteUser() {
+export async function deleteUser(model) {
+    try {
+        const user = await User.findById(model.id).exec();
+        if (user
+            && await user.checkPassword(model.password)
+            && generateVerificationHash(model.id) === model.verificationHash) {
+            return await User.findByIdAndRemove(model.id);
+        }
+    } catch (err) {
+        throw err;
+    }
 }
 
 export default {
@@ -100,5 +114,7 @@ export default {
     generateHashSync,
     generateHash,
     createUser,
-    checkUser
+    checkUser,
+    generateVerificationHash,
+    deleteUser
 }
