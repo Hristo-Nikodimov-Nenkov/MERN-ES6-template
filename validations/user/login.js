@@ -1,6 +1,6 @@
-import {isRequired, isRequiredBail} from "../common.js"
+import {bodyFieldsExists} from "../common.js";
 
 export default [
-    isRequired("identifier"),
-    isRequiredBail("password")
+    bodyFieldsExists("identifier"),
+    bodyFieldsExists("password")
 ]
