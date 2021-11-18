@@ -1,10 +1,12 @@
+import fields from "./fieldNames.js";
 import {username} from "./fields/username.js";
 import {email} from "./fields/email.js";
-import {confirmPassword, password} from "./fields/password.js";
+import {password} from "./fields/password.js";
+import {confirmPassword} from "./fields/confirmPassword.js";
 
 export default [
-    username("username"),
-    email("email"),
-    password("password"),
-    confirmPassword("confirmPassword")
+    username(fields.usernameFieldName),
+    email(fields.emailFieldName),
+    password(fields.passwordFieldName),
+    confirmPassword(fields.confirmPasswordFieldName, fields.passwordFieldName)
 ]

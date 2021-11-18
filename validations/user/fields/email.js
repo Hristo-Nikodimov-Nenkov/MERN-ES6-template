@@ -1,10 +1,24 @@
-import {bodyFieldsExistsBail} from "../../common.js";
+import {body} from "express-validator";
+import fieldNames from "../fieldNames.js";
+import {getFieldErrorMessages} from "../../modelErrorMessages.js";
+import User from "../../../models/User.js";
 
-const defaultFields = "email";
+const errorMessages = getFieldErrorMessages("user", fieldNames.emailFieldName);
 
-export function email(fields = defaultFields) {
-    return bodyFieldsExistsBail(fields)
-        .isEmail()
-        .withMessage("Valid E-Mail address is required!")
+export const email = (field) =>
+    body(field)
+        .exists({checkFalsy: true})
+        .withMessage(errorMessages.isRequired)
         .bail()
-}
+        .isEmail()
+        .withMessage(errorMessages.invalidEmailAddress)
+        .custom(async (value) => {
+            const user = await User.emailExists(value);
+            if (!!user) {
+                throw errorMessages.isRegistered(value);
+            }
+
+            return true;
+        });
+
+export default email;

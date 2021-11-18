@@ -75,7 +75,6 @@ web_modules/
 .yarn-integrity
 
 # dotenv environment variables file
-.env
 .env.test
 .env.production
 
@@ -137,5 +136,30 @@ sketch
 
 .idea
 /public
+
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+client/node_modules
+client/*.pnp
+client/*.pnp.js
+
+# testing
+client/coverage
+
+# production
+client/build
+
+# misc
+client/*.DS_Store
+client/*.env.local
+client/*.env.development.local
+client/*.env.test.local
+client/*.env.production.local
+
+client/*npm-debug.log*
+client/*yarn-debug.log*
+client/*yarn-error.log*
+
 
 # End of https://www.toptal.com/developers/gitignore/api/node,react

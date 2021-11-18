@@ -1,8 +1,14 @@
-const defaultPort = 5000;
+import path from "path";
+
+const defaultPort = 3000;
 export const port = process.env.PORT || defaultPort;
-export const staticFilesRelativePath = "./public"; // Path is relative to template root folder!
+export const staticFilesRelativePath = "./public";
+export const clientIndexFile = path.resolve(
+   `${staticFilesRelativePath}/index.html`
+);
 
 export default {
-    port,
-    staticFilesRelativePath
-}
+   port,
+   staticFilesRelativePath,
+   clientIndexFile,
+};

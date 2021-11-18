@@ -1,13 +1,9 @@
-import path from "path";
+import { clientIndexFile } from "../configs/application.js";
 
 import account from "../routers/account.js";
 
-function fallback(req, res){
-    res.sendFile(path.resolve("./public/index.html"));
-}
-
 export default function (app) {
-    app.use("/account", account);
+   app.use("/api/account", account);
 
-    app.use("*", fallback);
+   app.use("*", (req, res) => res.sendFile(clientIndexFile));
 }

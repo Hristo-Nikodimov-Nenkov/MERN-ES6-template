@@ -1,9 +1,13 @@
-export function fieldsString(fields){
+export function capitalize(str) {
+    return str[0].toUpperCase() + str.slice(1);
+}
+
+export function fieldsString(fields) {
     return Array.isArray(fields)
         ? fields.map(f => f.toLowerCase())
-            .map(f => f[0].toUpperCase() + f.slice(1))
+            .map(f => capitalize(f))
             .join(", ")
-        : fields[0].toUpperCase() + fields.slice(1);
+        : capitalize(fields);
 }
 
 export function isRequiredMessage(fields) {
@@ -18,14 +22,25 @@ export function hasLengthMessage(fields, minLength, maxLength) {
     return `${fieldsStr} must be between ${minLength} and ${maxLength} symbols!`;
 }
 
-export function containsMessage(fields, message){
+export function hasValueRangeMessage(fields, minValue, maxValue) {
+    const fieldsStr = fieldsString(fields);
+    return `${fieldsStr} must be between ${minValue} and ${maxValue}.`;
+}
+
+export function containsMessage(fields, message) {
     const fieldsStr = fieldsString(fields);
     return `${fieldsStr} must contain ${message}.`;
 }
 
+export function existsMessage(field, value) {
+    return `${capitalize(field)} ${value} exists.`;
+}
+
 export default {
+    capitalize,
     fieldsString,
     isRequiredMessage,
     hasLengthMessage,
-    containsMessage
+    containsMessage,
+    existsMessage
 }

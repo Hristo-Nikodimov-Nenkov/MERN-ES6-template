@@ -1,4 +1,4 @@
-export const developmentDatabaseName = "database";
+export const developmentDatabaseName = "car-service";
 export const developmentConnectionString = `mongodb://localhost/${developmentDatabaseName}`;
 export const connectionString = process.env.DB_CONNECTION_STRING || developmentConnectionString;
 

@@ -6,7 +6,7 @@
   "main": "app.js",
   "scripts": {
     "start": "node app.js",
-    "dev": "nodemon app.js"
+    "dev": "nodemon app.js --ignore client"
   },
   "keywords": [
     "MERN",
@@ -20,6 +20,7 @@
   "license": "MIT",
   "dependencies": {
     "cookie-parser": "^1.4.5",
+    "cors": "^2.8.5",
     "express": "^4.17.1",
     "express-validator": "^6.12.2",
     "jsonwebtoken": "^8.5.1",

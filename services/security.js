@@ -2,12 +2,17 @@ import jwt from "jsonwebtoken";
 import {cookieConfigs, tokenConfigs} from "../configs/security.js";
 
 const defaultHasAllRoles = false;
+const authenticatedUserIsRequired = "Authenticated user is required!";
+const userWithRolesIsRequired = (roles) => {
+    const rolesStr = roles.join(", ").replace(/,([^,]*)$/, " or" + '$1');
+    return `User with role${(roles.length > 1) ? "s" : ""} ${rolesStr} is required.`;
+}
 
 export function isAuthenticated(roles, hasAllRoles = defaultHasAllRoles) {
     if (!roles) {
         return function (req, res, next) {
             if (!req.user) {
-                res.status(401).send("Authenticated user is required!");
+                res.status(401).send(authenticatedUserIsRequired);
                 return;
             }
 
@@ -16,18 +21,19 @@ export function isAuthenticated(roles, hasAllRoles = defaultHasAllRoles) {
     }
 
     return function (req, res, next) {
-        const isAuthenticatedUser = !!req.user;
-        const hasRequiredRoles
-            = hasAllRoles
-            ? roles.every(role => req.user.roles.contains(role))
-            : roles.some(role => req.user.roles.contains(role));
+        if (!!req.user) {
+            const hasRequiredRoles
+                = hasAllRoles
+                ? roles.every(role => req.user.roles.contains(role))
+                : roles.some(role => req.user.roles.contains(role));
 
-        if (isAuthenticatedUser && hasRequiredRoles) {
-            next();
-            return;
+            if (hasRequiredRoles) {
+                next();
+                return;
+            }
         }
 
-        res.status(401).send("Insufficient rights!");
+        res.status(401).send(userWithRolesIsRequired(roles));
     }
 }
 

@@ -1,10 +1,17 @@
 import mongoose from "mongoose";
-import databaseConfigs from "../configs/database.js";
+import databaseConfigs, {
+   developmentConnectionString,
+} from "../configs/database.js";
 
 export default function () {
-    mongoose.connect(databaseConfigs.connectionString)
-        .then(
-            () => console.log("Database connection established!"),
-            err => console.log(err)
-        );
+   mongoose
+      .connect(databaseConfigs.connectionString)
+      .then(() => {
+         const dbEnvStr =
+            databaseConfigs.connectionString === developmentConnectionString
+               ? "Development"
+               : "Production";
+         console.log(`${dbEnvStr} database connected.`);
+      })
+      .catch((err) => console.log(err));
 }
