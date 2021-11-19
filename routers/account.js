@@ -14,42 +14,48 @@ router.post(
    account.register
 );
 
-router.post("/login", ...validations.login, validateModel, account.login);
+router.post(
+    "/login",
+    ...validations.login,
+    validateModel,
+    account.login);
 
-router.post("/logout", isAuthenticated(), account.logout);
-
-router.put(
-   "/changeUsername",
-   isAuthenticated(),
-   ...validations.changeUsername,
-   validateModel,
-   account.changeUsername
-);
-
-router.put(
-   "/changeEmail",
-   isAuthenticated(),
-   ...validations.changeEmail,
-   validateModel,
-   account.changeEmail
-);
+router.post(
+    "/logout",
+    isAuthenticated(),
+    account.logout);
 
 router.put(
-   "/changePassword",
-   isAuthenticated(),
-   ...validations.changePassword,
-   validateModel,
-   account.changePassword
-);
+    "/changeUsername",
+    isAuthenticated(),
+    ...validations.changeUsername,
+    validateModel,
+    account.changeUsername);
 
-router.post("/remove", isAuthenticated(), account.removePost);
+router.put(
+    "/changeEmail",
+    isAuthenticated(),
+    ...validations.changeEmail,
+    validateModel,
+    account.changeEmail);
+
+router.put(
+    "/changePassword",
+    isAuthenticated(),
+    ...validations.changePassword,
+    validateModel,
+    account.changePassword);
+
+router.post(
+    "/remove",
+    isAuthenticated(),
+    account.removePost);
 
 router.delete(
-   "/remove",
-   isAuthenticated(),
-   ...validations.remove,
-   validateModel,
-   account.removeDel
-);
+    "/remove",
+    isAuthenticated(),
+    ...validations.remove,
+    validateModel,
+    account.removeDel);
 
 export default router;
