@@ -1,6 +1,6 @@
 import {body} from "express-validator";
 import fieldNames from "../fieldNames.js";
-import {getFieldErrorMessages} from "../../modelErrorMessages.js";
+import {getFieldErrorMessages} from "../../errorMessages.js";
 import User from "../../../models/User.js";
 
 const errorMessages = getFieldErrorMessages("user", fieldNames.emailFieldName);

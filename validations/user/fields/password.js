@@ -1,6 +1,6 @@
 import {body} from "express-validator";
 import {password as consts} from "../../../models/constants/user.js";
-import {getFieldErrorMessages} from "../../modelErrorMessages.js";
+import {getFieldErrorMessages} from "../../errorMessages.js";
 import fieldNames from "../fieldNames.js";
 
 const errorMessages = getFieldErrorMessages("user", fieldNames.passwordFieldName);

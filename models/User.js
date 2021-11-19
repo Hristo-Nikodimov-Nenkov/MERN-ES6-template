@@ -5,11 +5,11 @@ import instanceMethods from "./methods/user.js";
 import staticMethods from "./statics/user.js";
 
 for (const methodName in instanceMethods) {
-   userSchema.methods[methodName] = instanceMethods[methodName];
+    userSchema.methods[methodName] = instanceMethods[methodName];
 }
 
 for (const methodName in staticMethods) {
-   userSchema.statics[methodName] = staticMethods[methodName];
+    userSchema.statics[methodName] = staticMethods[methodName];
 }
 
 const User = mongoose.model("User", userSchema, "users", false);

@@ -1,62 +1,53 @@
-import { cookieConfigs } from "../configs/security.js";
-import { getRequestUserModel } from "../mappers/user.js";
-import { verifyTokenSync } from "../services/security.js";
+import {cookieConfigs} from "../configs/security.js";
+import {getRequestUserModel} from "../mappers/user.js";
+import {verifyTokenSync} from "../services/security.js";
+import {authenticationErrorMessages} from "../services/error.js";
 
 function authenticate(req, res, next) {
-   const authenticationCookie =
-      req.cookies[cookieConfigs.authenticationCookieName] ||
-      req.signedCookies[cookieConfigs.authenticationCookieName];
+    const authenticationCookie =
+        req.cookies[cookieConfigs.authenticationCookieName] ||
+        req.signedCookies[cookieConfigs.authenticationCookieName];
 
-   if (authenticationCookie) {
-      const user = verifyTokenSync(authenticationCookie);
-      if (user) {
-         req.user = getRequestUserModel(user);
-      }
-   }
+    if (authenticationCookie) {
+        const user = verifyTokenSync(authenticationCookie);
+        if (user) {
+            req.user = getRequestUserModel(user);
+        }
+    }
 
-   next();
+    next();
 }
 
-const defaultHasAllRoles = false;
-const authenticatedUserIsRequired = "Authenticated user is required!";
-const userWithRolesIsRequired = (roles, hasAllRoles = defaultHasAllRoles) => {
-   const replaceStr = hasAllRoles ? " and" : " or";
-   const rolesStr = roles
-      .join(", ")
-      .replace(/,([^,]*)$/, { replaceStr } + "$1");
-   return `User with role${
-      roles.length > 1 ? "s" : ""
-   } ${rolesStr} is required.`;
-};
+export const defaultHasAllRoles = false;
 
 export function isAuthenticated(roles, hasAllRoles = defaultHasAllRoles) {
-   if (!roles) {
-      return function (req, res, next) {
-         if (!req.user) {
-            res.status(401).send(authenticatedUserIsRequired);
-            return;
-         }
+    if (!roles) {
+        return function (req, res, next) {
+            if (!req.user) {
+                res.status(401).send(authenticationErrorMessages.authenticatedUserIsRequired);
+                return;
+            }
 
-         next();
-      };
-   }
-
-   return function (req, res, next) {
-      if (!!req.user) {
-         const hasRequiredRoles = hasAllRoles
-            ? roles.every((role) => req.user.roles.contains(role))
-            : roles.some((role) => req.user.roles.contains(role));
-
-         if (hasRequiredRoles) {
             next();
-            return;
-         }
-      }
+        };
+    }
 
-      res.status(401).send(userWithRolesIsRequired(roles));
-   };
+    return function (req, res, next) {
+        if (!!req.user) {
+            const hasRequiredRoles = hasAllRoles
+                ? roles.every((role) => req.user.roles.contains(role))
+                : roles.some((role) => req.user.roles.contains(role));
+
+            if (hasRequiredRoles) {
+                next();
+                return;
+            }
+        }
+
+        res.status(401).send(authenticationErrorMessages.userWithRolesIsRequired(roles));
+    };
 }
 
 export default function (app) {
-   app.use(authenticate);
+    app.use(authenticate);
 }
