@@ -1,6 +1,6 @@
-import { Router } from "express";
-import { isAuthenticated } from "../middlewares/authentication.js";
-import { validateModel } from "../middlewares/validateModel.js";
+import {Router} from "express";
+import {isAuthenticated} from "../middlewares/authentication.js";
+import {validateModel} from "../middlewares/validateModel.js";
 import validations from "../validations/user/index.js";
 
 import account from "../controllers/account.js";
@@ -15,47 +15,51 @@ router.post(
 );
 
 router.post(
-    "/login",
-    ...validations.login,
-    validateModel,
-    account.login);
+   "/login",
+   ...validations.login,
+   validateModel,
+   account.login);
+
+router.get("/profile",
+   isAuthenticated(),
+   account.profile);
 
 router.post(
-    "/logout",
-    isAuthenticated(),
-    account.logout);
+   "/logout",
+   isAuthenticated(),
+   account.logout);
 
 router.put(
-    "/changeUsername",
-    isAuthenticated(),
-    ...validations.changeUsername,
-    validateModel,
-    account.changeUsername);
+   "/changeUsername",
+   isAuthenticated(),
+   ...validations.changeUsername,
+   validateModel,
+   account.changeUsername);
 
 router.put(
-    "/changeEmail",
-    isAuthenticated(),
-    ...validations.changeEmail,
-    validateModel,
-    account.changeEmail);
+   "/changeEmail",
+   isAuthenticated(),
+   ...validations.changeEmail,
+   validateModel,
+   account.changeEmail);
 
 router.put(
-    "/changePassword",
-    isAuthenticated(),
-    ...validations.changePassword,
-    validateModel,
-    account.changePassword);
+   "/changePassword",
+   isAuthenticated(),
+   ...validations.changePassword,
+   validateModel,
+   account.changePassword);
 
 router.post(
-    "/remove",
-    isAuthenticated(),
-    account.removePost);
+   "/remove",
+   isAuthenticated(),
+   account.removePost);
 
 router.delete(
-    "/remove",
-    isAuthenticated(),
-    ...validations.remove,
-    validateModel,
-    account.removeDel);
+   "/remove",
+   isAuthenticated(),
+   ...validations.remove,
+   validateModel,
+   account.removeDel);
 
 export default router;
