@@ -10,7 +10,7 @@ export const password = {
 };
 
 export const userRoles = {
-   client: "Client",
+   client: "User",
    admin: "Admin",
 };
 
