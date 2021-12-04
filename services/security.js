@@ -12,7 +12,7 @@ export function isAuthenticated(roles, hasAllRoles = defaultHasAllRoles) {
     if (!roles) {
         return function (req, res, next) {
             if (!req.user) {
-                res.status(401).send(authenticatedUserIsRequired);
+                res.status(401).send(JSON.stringify(authenticatedUserIsRequired));
                 return;
             }
 
@@ -33,7 +33,7 @@ export function isAuthenticated(roles, hasAllRoles = defaultHasAllRoles) {
             }
         }
 
-        res.status(401).send(userWithRolesIsRequired(roles));
+        res.status(401).send(JSON.stringify(userWithRolesIsRequired(roles)));
     }
 }
 

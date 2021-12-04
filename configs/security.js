@@ -3,8 +3,8 @@ import {port} from "./application.js";
 export const defaultEncoding = "base64";
 export const encoding = process.env.SECURITY_ENCODING
 in ["ascii", "utf8", "utf16le", "ucs2", "base64", "binary", "hex"]
-    ? process.env.SECURITY_ENCODING
-    : defaultEncoding;
+   ? process.env.SECURITY_ENCODING
+   : defaultEncoding;
 
 export const defaultPasswordSaltLength = 16;
 export const passwordSaltLength = process.env.PASSWORD_SALT_LENGTH || defaultPasswordSaltLength;
@@ -19,11 +19,11 @@ export const defaultHashingAlgorithm = "sha512";
 export const hashingAlgorithm = process.env.PASSWORD_HASHING_ALGORITHM || defaultHashingAlgorithm;
 
 export const passwordConfigs = {
-    encoding,
-    passwordSaltLength,
-    passwordHashLength,
-    iterationsCount,
-    hashingAlgorithm
+   encoding,
+   passwordSaltLength,
+   passwordHashLength,
+   iterationsCount,
+   hashingAlgorithm
 }
 
 export const defaultTokenSecret = "My JWT Signing Secret";
@@ -39,12 +39,12 @@ export const defaultTokenExpiresIn = "1h";
 export const tokenExpiresIn = process.env.JWT_EXPIERY || defaultTokenExpiresIn;
 
 export const tokenConfigs = {
-    tokenSecret,
-    options: {
-        issuer: tokenIssuer,
-        audience: tokenAudience,
-        expiresIn: tokenExpiresIn
-    }
+   tokenSecret,
+   options: {
+      issuer: tokenIssuer,
+      audience: tokenAudience,
+      expiresIn: tokenExpiresIn
+   }
 }
 
 export const defaultCookieSecret = "My Cookies Signing Secret";
@@ -54,27 +54,28 @@ export const defaultAuthenticationCookieName = "Authentication";
 export const authenticationCookieName = process.env.COOKIE_NAME || defaultAuthenticationCookieName;
 
 export const cookieConfigs = {
-    authenticationCookieName,
-    cookieSecret,
-    options: {
-        httpOnly: true,
-        signed: true
-    }
+   authenticationCookieName,
+   cookieSecret,
+   options: {
+      httpOnly: true,
+      signed: true,
+      secure: process.env.NODE_ENV !== "development"
+   }
 }
 
 export const defaultConfigs = {
-    defaultEncoding,
-    defaultPasswordSaltLength,
-    defaultPasswordHashLength,
-    defaultIterationsCount,
-    defaultHashingAlgorithm,
-    defaultTokenSecret,
-    defaultCookieSecret
+   defaultEncoding,
+   defaultPasswordSaltLength,
+   defaultPasswordHashLength,
+   defaultIterationsCount,
+   defaultHashingAlgorithm,
+   defaultTokenSecret,
+   defaultCookieSecret
 }
 
 export default {
-    defaultConfigs,
-    passwordConfigs,
-    tokenConfigs,
-    cookieConfigs
+   defaultConfigs,
+   passwordConfigs,
+   tokenConfigs,
+   cookieConfigs
 }

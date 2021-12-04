@@ -25,9 +25,12 @@ jobs:
       - name: Install Dependencies for client application.
         working-directory: ./client
         run: npm install
+      - name: Run Client Tests
+        working-directory: ./client
+        run: npm run test
       - name: Build client application.
         working-directory: ./client
-        run: npm run build
+        run: CI=false npm run build
       - name: Remove .github folder
         uses: JesseTG/rm@v1.0.2
         with:

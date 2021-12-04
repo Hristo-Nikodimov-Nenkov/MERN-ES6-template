@@ -1,6 +1,7 @@
 import {defaultHasAllRoles} from "../middlewares/authentication.js";
 
 export const authenticationErrorMessages = {
+    alreadyAuthenticated: "You are already authenticated. Logout first.",
     authenticatedUserIsRequired: "Authenticated user is required!",
     userWithRolesIsRequired: (roles, hasAllRoles = defaultHasAllRoles) => {
         const replaceStr = hasAllRoles ? " and" : " or";

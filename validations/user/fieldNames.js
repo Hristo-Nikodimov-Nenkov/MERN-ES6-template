@@ -4,7 +4,7 @@ const passwordFieldName = "password";
 const confirmPasswordFieldName = "confirmPassword";
 const currentPasswordFieldName = "currentPassword";
 const identifierFieldName = "identifier";
-const validationHashFieldName = "verificationHash";
+const validationHashFieldName = "validationHash";
 
 export default {
     usernameFieldName,

@@ -60,11 +60,6 @@ export const checkUser = async (model) => {
    return getUserWithIdViewModel(user);
 }
 
-export const getById = async (userId) => {
-   const user = await User.findById({_id: userId}).exec();
-   return getUserWithIdViewModel(user);
-}
-
 export const checkUserById = async (id, password) => {
    const user = await User.findById(id).exec();
 
@@ -77,6 +72,11 @@ export const checkUserById = async (id, password) => {
    }
 
    return user;
+}
+
+export const getById = async (userId) => {
+   const user = await User.findById(userId).exec();
+   return getUserWithIdViewModel(user);
 }
 
 export const changeUsername = async (model) => {
@@ -136,8 +136,8 @@ export default {
    generateSalt,
    generateHash,
    createUser,
-   getById,
    checkUser,
+   getById,
    changeUsername,
    changeEmail,
    changePassword,

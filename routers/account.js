@@ -1,5 +1,5 @@
 import {Router} from "express";
-import {isAuthenticated} from "../middlewares/authentication.js";
+import {isAuthenticated, isNotAuthenticated} from "../middlewares/authentication.js";
 import {validateModel} from "../middlewares/validateModel.js";
 import validations from "../validations/user/index.js";
 
@@ -9,25 +9,26 @@ const router = Router();
 
 router.post(
    "/register",
+   isNotAuthenticated(),
    ...validations.register,
    validateModel,
-   account.register
-);
+   account.register);
 
 router.post(
    "/login",
+   isNotAuthenticated(),
    ...validations.login,
    validateModel,
    account.login);
-
-router.get("/profile",
-   isAuthenticated(),
-   account.profile);
 
 router.post(
    "/logout",
    isAuthenticated(),
    account.logout);
+
+router.get("/profile",
+   isAuthenticated(),
+   account.profile)
 
 router.put(
    "/changeUsername",
