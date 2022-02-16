@@ -1,4 +1,4 @@
-import { port } from "./application.js";
+import {port} from "./application.js";
 
 export const defaultEncoding = "base64";
 export const encoding =
@@ -79,9 +79,11 @@ export const defaultConfigs = {
    defaultCookieSecret,
 };
 
-export default {
+const securityConfigs = {
    defaultConfigs,
    passwordConfigs,
    tokenConfigs,
    cookieConfigs,
 };
+
+export default securityConfigs;

@@ -33,7 +33,6 @@ export const login = async (req, res) => {
       const viewModel = getUserViewModel(user);
       res.status(200).send(JSON.stringify(viewModel));
    } catch (err) {
-      console.log(err);
       res.status(400).send(JSON.stringify(err));
    }
 }

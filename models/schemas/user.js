@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { username, roles } from "../constants/user.js";
+import {roles, username} from "../constants/user.js";
 
 const userSchema = new mongoose.Schema({
    username: {
@@ -13,6 +13,16 @@ const userSchema = new mongoose.Schema({
       type: String,
       required: true,
       unique: true,
+   },
+   tokens: {
+      google: {
+         accessToken: String,
+         expiresIn: Number,
+         tokenType: String,
+         refreshToken: String
+      },
+      facebook: {},
+      github: {}
    },
    roles: {
       type: Array,
