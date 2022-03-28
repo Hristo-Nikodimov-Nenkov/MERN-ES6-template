@@ -15,3 +15,5 @@ export const authenticationErrorMessages = {
     invalidCredentials: "Invalid Credentials!",
     invalidVerificationHash: "Invalid verification hash!"
 }
+
+export {default as accountErrorMessages} from "./errors/account.js";

@@ -3,17 +3,10 @@ import {cookieConfigs, tokenConfigs} from "../configs/security.js";
 
 const defaultHasAllRoles = false;
 const authenticatedUserIsRequired = "Authenticated user is required!";
+
 const userWithRolesIsRequired = (roles) => {
    const rolesStr = roles.join(", ").replace(/,([^,]*)$/, " or" + '$1');
    return `User with role${(roles.length > 1) ? "s" : ""} ${rolesStr} is required.`;
-}
-
-export function useGoogleAuthentication() {
-
-}
-
-export function useFacebookAuthentication() {
-
 }
 
 export function isAuthenticated(roles, hasAllRoles = defaultHasAllRoles) {

@@ -1,9 +1,8 @@
 import crypto from "crypto";
 import User from "../models/User.js";
 import {passwordConfigs} from "../configs/security.js";
-import {getUserWithIdViewModel} from "../mappers/user.js";
-import {authenticationErrorMessages} from "./error.js";
-import userErrorMessages from "../validations/errorMessages/user.js";
+import {getUserWithIdViewModel} from "../mappers/account.js";
+import {authenticationErrorMessages, accountErrorMessages} from "./error.js";
 
 export const generateSalt = () =>
    new Promise(((resolve, reject) => {
@@ -64,7 +63,7 @@ export const checkUserById = async (id, password) => {
    const user = await User.findById(id).exec();
 
    if (!user) {
-      throw userErrorMessages.withIdDoesNotExist(id);
+      throw errors.withIdDoesNotExist(id);
    }
 
    if (!await user.checkPassword(password)) {
@@ -121,7 +120,7 @@ export const generateVerificationHash = async (userId) => {
 export const deleteUser = async (model) => {
    const user = await User.findById(model.id).exec();
    const userExists = !!user;
-   if (!userExists) throw userErrorMessages.withIdDoesNotExist(model.id);
+   if (!userExists) throw accountErrorMessages.userWithIdDoesNotExist(model.id);
 
    const validPassword = await user.checkPassword(model.password);
    if (!validPassword) throw authenticationErrorMessages.invalidCredentials;

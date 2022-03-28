@@ -1,5 +1,5 @@
 import {cookieConfigs} from "../configs/security.js";
-import {getRequestUserModel} from "../mappers/user.js";
+import {getRequestUserModel} from "../mappers/account.js";
 import {verifyTokenSync} from "../services/security.js";
 import {authenticationErrorMessages} from "../services/error.js";
 

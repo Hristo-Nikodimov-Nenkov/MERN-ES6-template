@@ -1,4 +1,4 @@
-import userService from "../../services/user.js";
+import userService from "../../services/account.js";
 
 export function setPasswordSync(password) {
     this.passwordSalt = userService.generateSaltSync();

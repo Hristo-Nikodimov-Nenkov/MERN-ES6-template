@@ -1,4 +1,4 @@
-import userService from "../services/user.js";
+import userService from "../services/account.js";
 import {
    signToken,
    setAuthenticationCookie,
@@ -14,7 +14,7 @@ import {
    getRemoveModel,
    getUserViewModel,
    getUserTokenModel
-} from "../mappers/user.js";
+} from "../mappers/account.js";
 
 export const register = async (req, res) => {
    try {

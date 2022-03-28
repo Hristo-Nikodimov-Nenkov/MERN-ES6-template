@@ -1,7 +1,7 @@
 import {Router} from "express";
 import {isAuthenticated, isNotAuthenticated} from "../middlewares/authentication.js";
 import {validateModel} from "../middlewares/validateModel.js";
-import validations from "../validations/user/index.js";
+import {changeEmailValidations, changePasswordValidations, changeUsernameValidations, loginValidations, registerValidations, removeValidations} from "../validations/account";
 
 import account from "../controllers/account.js";
 
@@ -10,14 +10,14 @@ const router = Router();
 router.post(
    "/register",
    isNotAuthenticated(),
-   ...validations.register,
+   ...registerValidations,
    validateModel,
    account.register);
 
 router.post(
    "/login",
    isNotAuthenticated(),
-   ...validations.login,
+   ...loginValidations,
    validateModel,
    account.login);
 
@@ -33,21 +33,21 @@ router.get("/profile",
 router.put(
    "/changeUsername",
    isAuthenticated(),
-   ...validations.changeUsername,
+   ...changeUsernameValidations,
    validateModel,
    account.changeUsername);
 
 router.put(
    "/changeEmail",
    isAuthenticated(),
-   ...validations.changeEmail,
+   ...changeEmailValidations,
    validateModel,
    account.changeEmail);
 
 router.put(
    "/changePassword",
    isAuthenticated(),
-   ...validations.changePassword,
+   ...changePasswordValidations,
    validateModel,
    account.changePassword);
 
@@ -59,7 +59,7 @@ router.post(
 router.delete(
    "/remove",
    isAuthenticated(),
-   ...validations.remove,
+   ...removeValidations,
    validateModel,
    account.removeDel);
 
