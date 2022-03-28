@@ -1,12 +1,12 @@
 {
   "name": "mern-es6-template",
   "version": "0.1.0",
-  "description": "Template project using Mongo Express React Node ( MERN ) technology stack.",
+  "description": "Template project using MongoDB, Express, React & Node ( MERN ) technology stack.",
   "type": "module",
   "main": "app.js",
   "scripts": {
-    "start": "node app.js",
-    "dev": "nodemon app.js --ignore client"
+    "start": "node --experimental-specifier-resolution=node app.js",
+    "dev": "nodemon --experimental-specifier-resolution=node app.js --ignore client"
   },
   "keywords": [
     "MERN",
