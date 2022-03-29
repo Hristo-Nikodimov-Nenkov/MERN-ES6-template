@@ -41,6 +41,6 @@ The algorithm used for the hashing. Default is sha512.
 ### You can create fresh client at any time.
 After you create fresh copy of the client application you must add .env file with
 BUILD_PATH='../public' this will change the client build path to /public.\
-and add /client/.env to MAIN .gitignore\
+and remove .env from MAIN .gitignore or the client will be built in /clinet/public\
 You don't need .gitignore file in the client, so you can remove it if you wish.\
 Setting BUILD_PATH in GitHub Secrets or Environments does NOT work.
