@@ -1,7 +1,7 @@
 import {cookieConfigs} from "../configs/security.js";
 import {getRequestUserModel} from "../mappers/account.js";
 import {verifyTokenSync} from "../services/security.js";
-import {authenticationErrorMessages} from "../services/error.js";
+import {authenticationServiceErrors} from "../services/errors";
 
 function authenticate(req, res, next) {
    const authenticationCookie =
@@ -25,7 +25,7 @@ export const defaultHasAllRoles = false;
 export function isNotAuthenticated() {
    return function (req, res, next) {
       if (req.user) {
-         res.status(400).send(JSON.stringify(authenticationErrorMessages.alreadyAuthenticated))
+         res.status(400).send(JSON.stringify(authenticationServiceErrors.alreadyAuthenticated))
          return;
       }
 
@@ -37,7 +37,7 @@ export function isAuthenticated(roles, hasAllRoles = defaultHasAllRoles) {
    if (!roles) {
       return function (req, res, next) {
          if (!req.user) {
-            res.status(401).send(JSON.stringify(authenticationErrorMessages.authenticatedUserIsRequired));
+            res.status(401).send(JSON.stringify(authenticationServiceErrors.authenticatedUserIsRequired));
             return;
          }
 
@@ -57,7 +57,7 @@ export function isAuthenticated(roles, hasAllRoles = defaultHasAllRoles) {
          }
       }
 
-      res.status(401).send(JSON.stringify(authenticationErrorMessages.userWithRolesIsRequired(roles)));
+      res.status(401).send(JSON.stringify(authenticationServiceErrors.userWithRolesIsRequired(roles)));
    };
 }
 

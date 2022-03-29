@@ -1,66 +1,66 @@
 import {Router} from "express";
 import {isAuthenticated, isNotAuthenticated} from "../middlewares/authentication.js";
 import {validateModel} from "../middlewares/validateModel.js";
-import {changeEmailValidations, changePasswordValidations, changeUsernameValidations, loginValidations, registerValidations, removeValidations} from "../validations/account";
+import {account} from "../validations";
 
-import account from "../controllers/account.js";
+import {accountController} from "../controllers";
 
 const router = Router();
 
 router.post(
    "/register",
    isNotAuthenticated(),
-   ...registerValidations,
+   ...account.registerValidations,
    validateModel,
-   account.register);
+   accountController.register);
 
 router.post(
    "/login",
    isNotAuthenticated(),
-   ...loginValidations,
+   ...account.loginValidations,
    validateModel,
-   account.login);
+   accountController.login);
 
 router.post(
    "/logout",
    isAuthenticated(),
-   account.logout);
+   accountController.logout);
 
 router.get("/profile",
    isAuthenticated(),
-   account.profile)
+   accountController.profile)
 
 router.put(
    "/changeUsername",
    isAuthenticated(),
-   ...changeUsernameValidations,
+   ...account.changeUsernameValidations,
    validateModel,
-   account.changeUsername);
+   accountController.changeUsername);
 
 router.put(
    "/changeEmail",
    isAuthenticated(),
-   ...changeEmailValidations,
+   ...account.changeEmailValidations,
    validateModel,
-   account.changeEmail);
+   accountController.changeEmail);
 
 router.put(
    "/changePassword",
    isAuthenticated(),
-   ...changePasswordValidations,
+   ...account.changePasswordValidations,
    validateModel,
-   account.changePassword);
+   accountController.changePassword);
 
 router.post(
    "/remove",
    isAuthenticated(),
-   account.removePost);
+   accountController.removePost);
 
 router.delete(
    "/remove",
    isAuthenticated(),
-   ...removeValidations,
+   ...account.removeValidations,
    validateModel,
-   account.removeDel);
+   accountController.removeDel);
 
 export default router;

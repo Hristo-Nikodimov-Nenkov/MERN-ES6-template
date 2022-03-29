@@ -2,7 +2,7 @@ import crypto from "crypto";
 import User from "../models/User.js";
 import {passwordConfigs} from "../configs/security.js";
 import {getUserWithIdViewModel} from "../mappers/account.js";
-import {authenticationErrorMessages, accountErrorMessages} from "./error.js";
+import {accountServiceErrors, authenticationServiceErrors} from "./errors";
 
 export const generateSalt = () =>
    new Promise(((resolve, reject) => {
@@ -49,11 +49,11 @@ export const checkUser = async (model) => {
    let user = await User.getByUsername(model.identifier) || await User.getByEmail(model.identifier);
 
    if (!user) {
-      throw authenticationErrorMessages.invalidCredentials;
+      throw authenticationServiceErrors.invalidCredentials;
    }
 
    if (!await user.checkPassword(model.password)) {
-      throw authenticationErrorMessages.invalidCredentials;
+      throw authenticationServiceErrors.invalidCredentials;
    }
 
    return getUserWithIdViewModel(user);
@@ -63,11 +63,11 @@ export const checkUserById = async (id, password) => {
    const user = await User.findById(id).exec();
 
    if (!user) {
-      throw errors.withIdDoesNotExist(id);
+      throw accountServiceErrors.userWithIdDoesNotExist(id);
    }
 
    if (!await user.checkPassword(password)) {
-      throw authenticationErrorMessages.invalidCredentials;
+      throw authenticationServiceErrors.invalidCredentials;
    }
 
    return user;
@@ -120,13 +120,13 @@ export const generateVerificationHash = async (userId) => {
 export const deleteUser = async (model) => {
    const user = await User.findById(model.id).exec();
    const userExists = !!user;
-   if (!userExists) throw accountErrorMessages.userWithIdDoesNotExist(model.id);
+   if (!userExists) throw accountServiceErrors.userWithIdDoesNotExist(model.id);
 
    const validPassword = await user.checkPassword(model.password);
-   if (!validPassword) throw authenticationErrorMessages.invalidCredentials;
+   if (!validPassword) throw authenticationServiceErrors.invalidCredentials;
 
    const validVerificationHash = await generateVerificationHash(model.id) === model.verificationHash;
-   if (!validVerificationHash) throw authenticationErrorMessages.invalidVerificationHash;
+   if (!validVerificationHash) throw authenticationServiceErrors.invalidVerificationHash;
 
    return getUserWithIdViewModel(await User.findByIdAndRemove(model.id).exec());
 }
