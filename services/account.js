@@ -1,5 +1,5 @@
 import crypto from "crypto";
-import User from "../models/User.js";
+import Account from "../models/Account.js";
 import {passwordConfigs} from "../configs/security.js";
 import {getUserWithIdViewModel} from "../mappers/account.js";
 import {accountServiceErrors, authenticationServiceErrors} from "./errors";
@@ -37,7 +37,7 @@ export const generateHash = (salt, password) => {
 }
 
 export const createUser = async (model) => {
-   const user = new User(model);
+   const user = new Account(model);
 
    await user.setPassword(model.password)
    await user.save();
@@ -46,7 +46,7 @@ export const createUser = async (model) => {
 }
 
 export const checkUser = async (model) => {
-   let user = await User.getByUsername(model.identifier) || await User.getByEmail(model.identifier);
+   let user = await Account.getByUsername(model.identifier) || await Account.getByEmail(model.identifier);
 
    if (!user) {
       throw authenticationServiceErrors.invalidCredentials;
@@ -60,7 +60,7 @@ export const checkUser = async (model) => {
 }
 
 export const checkUserById = async (id, password) => {
-   const user = await User.findById(id).exec();
+   const user = await Account.findById(id).exec();
 
    if (!user) {
       throw accountServiceErrors.userWithIdDoesNotExist(id);
@@ -74,7 +74,7 @@ export const checkUserById = async (id, password) => {
 }
 
 export const getById = async (userId) => {
-   const user = await User.findById(userId).exec();
+   const user = await Account.findById(userId).exec();
    return getUserWithIdViewModel(user);
 }
 
@@ -106,11 +106,11 @@ export const changePassword = async (model) => {
 }
 
 export const usernameExists = async (username) => {
-   return !!(await User.findOne({username: username}).exec());
+   return !!(await Account.findOne({username: username}).exec());
 }
 
 export const generateVerificationHash = async (userId) => {
-   const user = await User.findById(userId).exec()
+   const user = await Account.findById(userId).exec()
    return crypto
       .createHmac(passwordConfigs.hashingAlgorithm, user.passwordSalt)
       .update(userId)
@@ -118,7 +118,7 @@ export const generateVerificationHash = async (userId) => {
 }
 
 export const deleteUser = async (model) => {
-   const user = await User.findById(model.id).exec();
+   const user = await Account.findById(model.id).exec();
    const userExists = !!user;
    if (!userExists) throw accountServiceErrors.userWithIdDoesNotExist(model.id);
 
@@ -128,7 +128,7 @@ export const deleteUser = async (model) => {
    const validVerificationHash = await generateVerificationHash(model.id) === model.verificationHash;
    if (!validVerificationHash) throw authenticationServiceErrors.invalidVerificationHash;
 
-   return getUserWithIdViewModel(await User.findByIdAndRemove(model.id).exec());
+   return getUserWithIdViewModel(await Account.findByIdAndRemove(model.id).exec());
 }
 
 export default {

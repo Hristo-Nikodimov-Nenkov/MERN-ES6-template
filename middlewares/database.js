@@ -13,7 +13,7 @@ export default function () {
                : "Production";
          console.log(`${dbEnvStr} database connected.`);
 
-         import("../models/User.js");
+         import("../models/Account.js");
       })
       .catch((err) => console.log(err));
 }

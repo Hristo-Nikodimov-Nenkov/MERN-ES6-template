@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
-import {roles, username} from "../constants/user.js";
+import {roles, username} from "../constants/account.js";
 
-const userSchema = new mongoose.Schema({
+const accountSchema = new mongoose.Schema({
    username: {
       type: String,
       required: true,
@@ -47,4 +47,4 @@ const userSchema = new mongoose.Schema({
    },
 });
 
-export default userSchema;
+export default accountSchema;

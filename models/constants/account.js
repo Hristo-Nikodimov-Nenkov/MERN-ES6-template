@@ -9,12 +9,12 @@ export const password = {
    maxLength: 40,
 };
 
-export const userRoles = {
+export const accountRoles = {
    client: "User",
    admin: "Admin",
 };
 
-export const roles = Object.values(userRoles);
+export const roles = Object.values(accountRoles);
 
 export default {
    username,
