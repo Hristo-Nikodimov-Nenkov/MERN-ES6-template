@@ -1,6 +1,6 @@
 import {Router} from "express";
 import {isAuthenticated, isNotAuthenticated} from "../middlewares/authentication.js";
-import {validateModel} from "../middlewares/validateModel.js";
+import validateModel from "../middlewares/validateModel.js";
 import {account} from "../validations";
 
 import {accountController} from "../controllers";
