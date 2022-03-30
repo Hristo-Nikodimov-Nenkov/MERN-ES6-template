@@ -1,19 +1,26 @@
 import {validationResult} from "express-validator";
 
-export function validateModel(req, res, next) {
-    const validations = validationResult(req);
-    if (!validations.isEmpty()) {
-        res.status(400)
-            .send(validations
-                .array()
-                .map(err => (
-                    {
-                        param: err.param,
-                        message: err.msg
-                    }
-                )));
-        return;
-    }
+const mapValidationError = (err) => (
+   {
+      param: err.param,
+      message: err.msg
+   }
+);
 
-    next();
+export function validateModel(req, res, next) {
+   const validationErrors = validationResult(req);
+
+   if (validationErrors.isEmpty()) {
+      next();
+      return;
+   }
+
+   const mappedValidationErrors = validationErrors
+      .array()
+      .map(mapValidationError);
+
+   res.status(400)
+      .send(mappedValidationErrors);
 }
+
+export default validateModel;
