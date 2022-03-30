@@ -92,3 +92,38 @@ If you do NOT use refactor/replace you need to change the name of the schema EVE
 ##### 4) In mongoose.model()
 You have to change the name of the model, the name of the schema and the name of the collection.
 ##### 5) The name of the const and the default export.
+
+## Adding controllers
+You can use both named and default export for the controller methods.
+
+## Adding services
+You can use both named and default export for the service methods.
+
+## Adding validations
+The default export of the model validation has to be Array for consistency.\
+You can set it to empty array at the beginning and gradually add validation chains afterwords.
+
+### Field validations
+I usually export a single ValidationChain for every field that needs validation.
+
+### Binding model validations
+I usually export an Array of ValidationChain for every model that needs validation.\
+In the beginning you can export an empty array which will always pass the validateModel middleware and call the controller method associated with the router path.
+
+## Adding routers
+You can create router for every entity and create standard REST service.
+The minimal code for the router is:\
+import {Router} from "express";\
+const someRouter = Router();\
+export default someRouter;
+
+### If you are using nested routes like:
+"storesRouter" in /api/stores\
+"itemsRouter" in /api/stores/:storeId/items\
+You MUST create the itemsRouter with merged params.\
+const itemsRouter = Router({mergeParams: true});\
+Which preserve the req.params values from the parent router. 
+##### If the parent and the child have conflicting param names, the child’s value take precedence.
+
+## Adding router to routes
+You MUST add the router between the accountRouter registration and the /api fallback middleware registration.
