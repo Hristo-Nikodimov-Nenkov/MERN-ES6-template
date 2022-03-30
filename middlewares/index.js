@@ -6,3 +6,4 @@ export {default as staticFiles} from "./staticFiles.js";
 export {default as authentication} from "./authentication.js";
 export {default as routes} from "./routes.js";
 export {default as server} from "./server.js";
+export {default as validateModel} from "./validateModel.js";
