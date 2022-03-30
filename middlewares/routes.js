@@ -4,7 +4,7 @@ import account from "../routers/account.js";
 
 export default function (app) {
    app.use("/api/account", account);
-
+   //Add routers here.
    app.use("/api/*", (req, res) => {
       const errorMessage = `Endpoint ${req.method.toUpperCase()} ${
          req.baseUrl
