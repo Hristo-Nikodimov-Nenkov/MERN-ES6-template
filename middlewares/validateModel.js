@@ -20,7 +20,7 @@ export function validateModel(req, res, next) {
       .map(mapValidationError);
 
    res.status(400)
-      .send(mappedValidationErrors);
+      .json(mappedValidationErrors);
 }
 
 export default validateModel;
