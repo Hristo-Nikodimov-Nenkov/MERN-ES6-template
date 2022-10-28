@@ -71,6 +71,9 @@ In this section you can set all environment variables you need.
 They can be changed/added/removed later in the Environment section of the Web Service.
 The Key/Value pairs are attached as properties of the process.env object.
 
+The first one you have to set is <b>BASE_PATH</b> with value\
+https://<b>service-name</b>.onrender.com
+
 ### Database SetUp
 The template uses "mongoose" and it takes the database connection string
 from environment variable named DB_CONNECTION_STRING for production.
