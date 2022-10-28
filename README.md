@@ -6,50 +6,75 @@ In order to function properly and to be flexible the template uses repository se
 and environment variables for its setup.
 
 ### GitHub Actions workflow setup
-Create secrets ( Settings > Secrets ) with names: "NAME" and "EMAIL". 
-This will be the name and email git will use in the workflow commit to deploy branch.
+Create secrets ( Settings > Secrets ) with names: "NAME" and "EMAIL".\
+This will be the name and email git will use in the workflow commit to deploy branch.\
 Put the values in " ".\
-The CI workflow built the client application to /public and 
-commits to "deploy" branch.\
-This branch can be used from hosting providers ( heroku )
+
+The workflow's <b>build-client</b> job uploads built client as artifact with name "client" and retains it for 1 day.
+
+The prepare-deploy job downloads the "client" artifact in ./public folder, uploads deploy-ready artifact "server"\
+and commits the deploy-ready app to "deploy" branch. 
+
+This branch can be used from hosting providers ( https://render.com )\
 as deploy-ready copy of the application (both front-end and back-end are included).
 
 #### The workflow fails if there are warnings when client is built
 You can prevent that by adding Secret with key CI and value false.
 
-### Heroku Setup
-You must have a heroku account.
-If you don't you have to create one.
-It's free, and you can deploy multiple applications free of charge.
+### Heroku removes all free dynos from 28/11/2022
+There is still way to deploy your app for free.
 
-#### Creating Heroku application
-Follow the Heroku documentation and create new Application (NOT Pipeline). 
+### Render Web Service deploy.
+https://render.com allows you to deploy both "Static" (stand-alone React applications)
+and Web Service (MERN, NodeJS etc).
+
+#### Creating Render "Web Service"
+Go to https://render.com and create un account.\
+If you already have one SignIn and go to Dashboard.\
+
+Press the "New" button and select Web Service.\
+You have to connect your GitHub account to be able to connect repository to the Web Service.\
+
+In the "Connect a repository" select which repo you want to connect,\
+by pressing the corresponding "Connect" button.\
+
+"Name" of the "Web Service" is also the subdomain on which your application\
+will be accessible. Your application will have domain "https://<b>service-name</b>.onrender.com".
+
+"Root directory" is the root directory of your application.\
+You should leave the field empty.\
+If you have moved your backend root from / to /src or other subdirectory then you should
+put that subdirectory here.\
+
+"Environment" has to be set to "Node".\
+You can also use Render Web Service for project written on Elixir, Go, Python, Ruby & Rust.
+It can host Docker containers as well.\
+
+"Region" is the location of the physical server that host your application.
+At the current moment there are only 4 locations, but for the purpose of testing they are enough.
+
+"Branch" - you should select the "deploy" branch.\
+If it is not present then the GitHub actions workflow failed.\
+You need to fix that first. When the workflow finishes successfully it creates the "deploy" branch.
+
+"Build command" - The application is does NOT need to be build. It only needs its dependencies.\
+type <b>npm install</b> or <b>yarn install</b>.
+
+"Start command" - <b>npm run start</b>
+
+"Plan type" - You can select any plan, but <b>Free</b> is why I use Render. 
+
+"Advanced" - In this section are the "Environment" variables, "Secret" file, "Auto-Deploy" option and "Build" filters.\
+In this section you can set all environment variables you need.
 
 #### Environment Variables
-The environment variables in Heroku are named "Config Vars",
-they are located in the Settings section of the application.
+They can be changed/added/removed later in the Environment section of the Web Service.
 The Key/Value pairs are attached as properties of the process.env object.
-
-#### Automatic Deploy Setup
-By connecting the Heroku application to the "deploy" branch 
-that was created by the GitHub Actions workflow you can automate
-the entire process.
-
-After connecting the Heroku application to the "deploy" branch
-of your GitHub repository select run the "Manual Deploy" of the "deploy"
-branch (ONLY THE FIRST TIME).
-###### Do NOT check the "Wait for CI to pass before deploy"
-
-#### Heroku Application logs and console
-In the Heroku application logs you can see the console output of your application.
-###### You can access the logs in the "More" dropdown of your application.
-If you open the logs and then "Restart all dynos", 
-you can observe the console output of your application,
-which can be helpful for debugging application crashes in production.
 
 ### Database SetUp
 The template uses "mongoose" and it takes the database connection string
 from environment variable named DB_CONNECTION_STRING for production.
+
 ###### If the connection password contains non-alphanumeric symbols you MUST URL-encode the connection string.
 For development and in case the environment variable is NOT set it uses
 the default values from /configs/database.js
@@ -60,11 +85,14 @@ The default values can be changed in /configs/security.js
 
 ##### SECURITY_ENCODING
 The string representation encoding of the salt and the hashed password.
+
 ###### Default is base64.
 If you use Heroku it can be set by using Config Vars.
+
 ##### PASSWORD_SALT_LENGTH
-The number of bytes ( before encoding ) of the salt. 
+The number of bytes ( before encoding ) of the salt.
 ###### Default is 16.
+
 ##### PASSWORD_HASH_LENGTH
 The number of bytes ( before encoding ) of the hashed password. 
 ###### Default is 64.
@@ -98,14 +126,8 @@ You can use any option available for create-react-app.
 ##### Setup client build path
 After you create fresh copy of the client application you must add .env file in /client with 
 ###### BUILD_PATH='../public'
-this will change the client build path to /public.
-
-###### You also need to remove ".env" from /.gitignore 
-.env is ignored by default\
-If the .env file is missing in the repository on build the client application will be built in /client/build.
-
-You don't need .gitignore file in the client, so you can remove it if you wish.\
-Setting BUILD_PATH in GitHub Secrets or Environments does NOT work.
+This will change the client build path to /public and when you run <b>npm run build</b> in the client directory
+the built client application will be placed automatically in the /public folder.  
 
 ## Adding models to back-end.
 The /models folder has 4 sub-folders\
