@@ -8,8 +8,8 @@
     "node": "~18.12.0"
   },
   "scripts": {
-    "start": "node --experimental-specifier-resolution=node app.js",
-    "dev": "nodemon --experimental-specifier-resolution=node app.js --ignore client"
+    "start": "node --loader ./loader.js app.js",
+    "dev": "nodemon --loader ./loader.js app.js --ignore client"
   },
   "keywords": [
     "MERN",
@@ -28,7 +28,8 @@
     "express-validator": "^6.12.2",
     "googleapis": "^92.0.0",
     "jsonwebtoken": "^8.5.1",
-    "mongoose": "^6.0.11"
+    "mongoose": "^6.0.11",
+    "resolve": "^1.22.1"
   },
   "devDependencies": {
     "nodemon": "^2.0.13"
