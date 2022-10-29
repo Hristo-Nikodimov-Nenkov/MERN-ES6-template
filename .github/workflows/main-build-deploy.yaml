@@ -99,5 +99,5 @@ jobs:
       - name: Push to deploy branch
         run: |
           git add -A .
-          git commit -m "Deployable branch created by CI workflow."
+          git commit -m "${GITHUB_SHA::7} deployable created by CI workflow"
           git push origin deploy -f
